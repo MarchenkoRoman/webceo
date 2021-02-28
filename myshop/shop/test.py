@@ -1,12 +1,18 @@
 from django.test  import TestCase
-from .models import Item
+from .models import Item, Employee, Sale
 
 
 class ItemListTest(TestCase):
-    @classmethod
-    def set_up_test_data(self):
-        Item.objects.create(item_name='Chips', quantity=60, price=1000, description='XXX', available=True)
+    fixtures = ["shop_models"]
 
     def test_200(self):
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 200)
+
+    def test_data_item(self):
+        item = Item.objects.get(pk=1)
+        self.assertTrue(item.available)
+
+    def test_data_employee(self):
+        employee = Employee.objects.get(pk=1)
+        self.assertEqual(employee.employee_name, "Nikoloy")

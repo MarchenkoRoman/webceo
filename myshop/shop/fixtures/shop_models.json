@@ -1,0 +1,70 @@
+[
+{
+    "model": "shop.item",
+    "pk": 1,
+    "fields": {
+        "item_name": "Tea",
+        "quantity": 100,
+        "price": "100.00",
+        "description": "amazing tea",
+        "available": true,
+        "image": ""
+    }
+},
+{
+    "model": "shop.item",
+    "pk": 2,
+    "fields": {
+        "item_name": "Coffee",
+        "quantity": 100,
+        "price": "200.00",
+        "description": "Tasty coffee",
+        "available": true,
+        "image": ""
+    }
+},
+{
+    "model": "shop.employee",
+    "pk": 1,
+    "fields": {
+        "employee_name": "Nikoloy",
+        "items": [
+            2,
+            1
+        ]
+    }
+},
+{
+    "model": "shop.employee",
+    "pk": 2,
+    "fields": {
+        "employee_name": "Konor",
+        "items": [
+            2,
+            1
+        ]
+    }
+},
+{
+    "model": "shop.employee",
+    "pk": 3,
+    "fields": {
+        "employee_name": "Foo",
+        "items": [
+            2,
+            1
+        ]
+    }
+},
+{
+    "model": "shop.sale",
+    "pk": 1,
+    "fields": {
+        "item": 2,
+        "employee": 3,
+        "quantity": 3,
+        "price": "100.00",
+        "created_date": "2021-02-28T18:14:53.497Z"
+    }
+}
+]

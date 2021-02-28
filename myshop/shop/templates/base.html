@@ -1,21 +1,35 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}This amazing shop{% endblock %}</title>
+
 </head>
 <body>
     <div id="header">
-
+        <a href="/" class="logo">My shop</a>
     </div>
     <div id="subheader">
-
+        <div class="cart">
+        </div>
     </div>
     <div id="content">
         {% block content %}
-            {% for item in items %}
-                {{ item.item_name }}
-            {% endfor %}
-        {% endblock %}
+            <h2>Items</h2>
+                {% for item in items %}
+                    <div class="item">
+                        <a href="{{ item.get_absolute_url }}">
+                        <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                        </a>
+                        <a href="{{ item.get_absolute_url }}">{{ item.item_name }}</a>
+                        <a href="{{ item.get_absolute_url }}"><button type="button">Buy it</button></a>
+                        <br>
+                        ${{ item.price }}
+                    </div>
+                {% endfor %}
+         {% endblock %}
     </div>
+
 </body>
+</html>
