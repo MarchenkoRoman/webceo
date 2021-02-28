@@ -68,6 +68,9 @@
     {% endif %}
     </nav>
     </div>
+    <div class="time">
+      {{ time.hour }}:{{ time.minute }}:{{ time.second }}   {{ time.day }}.{{ time.month }}.{{ time.year }}
+    </div>
     {% endblock %}
 </body>
 </html>
