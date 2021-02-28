@@ -1,9 +1,12 @@
-from django.shortcuts import render
-from annoying.decorators import render_to
+from django.views.generic import ListView
 from . models import Item
 
 
-@render_to('base.html')
-def item_list(request):
-    items = Item.objects.all()
-    return {'items': items}
+class ItemList(ListView):
+    model = Item
+    context_object_name = "items"
+    template_name = "base.html"
+
+    def get_queryset(self):
+        queryset = self.model._default_manager.filter(available=True).exclude(quantity=0)
+        return queryset
