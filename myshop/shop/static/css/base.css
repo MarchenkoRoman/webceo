@@ -46,11 +46,6 @@ img {
     margin-right:10%;
 }
 
-#subheader .cart {
-    float:right;
-    padding-top:4px;
-}
-
 .item {
     width:25%;
     padding: 10px 20px 10px;
@@ -84,29 +79,17 @@ table {
     border-collapse: collapse;
 }
 
+
 table th, table td {
     text-align:left;
     font-size:14px;
     padding:10px;
     margin:0;
+    border: 1px solid black;
 }
 
 tbody tr:nth-child(odd) {
 
-}
-
-
-thead th, tbody tr.total {
-    background: springgreen;
-    font-weight:bold;
-}
-
-table.cart {
-    margin-bottom:40px;
-}
-
-table.cart img {
-    width:180px;
 }
 
 tbody td.num {
@@ -116,4 +99,8 @@ tbody td.num {
 td input[type="submit"] {
     font-size:12px;
     padding:4px 10px;
+}
+.sales {
+    border-collapse: collapse;
+
 }

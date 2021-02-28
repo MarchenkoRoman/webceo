@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render
 from annoying.decorators import render_to
 from django.views.generic import ListView
@@ -18,5 +19,11 @@ class ItemList(ListView):
 def item_detail(request, item_id):
     item = get_object_or_404(Item, item_id=item_id, available=True)
     return {"item": item}
+
+class SaleList(LoginRequiredMixin, ListView):
+    model = Sale
+    paginate_by = 5
+    context_object_name = "sales"
+    template_name = "sale/salelist.html"
 
 
