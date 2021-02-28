@@ -1,0 +1,58 @@
+from decimal import Decimal
+from django.urls import reverse
+from django.core.validators import MinValueValidator
+from django.db import models
+
+
+class Item(models.Model):
+    item_id = models.AutoField(primary_key=True)
+    item_name = models.CharField(max_length=120, verbose_name='Товар')
+    quantity = models.PositiveSmallIntegerField(verbose_name='Количество')
+    price = models.DecimalField(max_digits=10,
+                                decimal_places=2,
+                                validators=[MinValueValidator(Decimal('0.01'))],
+                                verbose_name='цена')
+    description = models.TextField(blank=True)
+    available = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='products', blank=True)
+
+    class Meta:
+        ordering = ('item_name',)
+
+    def __str__(self):
+        return self.item_name
+
+    def get_absolute_url(self):
+        return reverse('shop:item_detail',
+                       args=[self.item_id])
+
+
+class Employee(models.Model):
+    employee_id = models.AutoField(primary_key=True)
+    employee_name = models.CharField(max_length=60, verbose_name='Продавец')
+    items = models.ManyToManyField(Item, related_name='Товары')
+
+    class Meta:
+        ordering = ('employee_name',)
+
+    def __str__(self):
+        return self.employee_name
+
+
+class Sale(models.Model):
+    sale_id = models.AutoField(primary_key=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(verbose_name='Количество')
+    price = models.DecimalField(max_digits=10,
+                                decimal_places=2,
+                                validators=[MinValueValidator(Decimal('0.01'))],
+                                verbose_name='Цена')
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created_date',)
+
+    def __str__(self):
+        return 'Order {}'.format(self.sale_id)
+
