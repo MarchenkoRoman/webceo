@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}This amazing shop{% endblock %}</title>
+</head>
+<body>
+    <div id="header">
+
+    </div>
+    <div id="subheader">
+
+    </div>
+    <div id="content">
+        {% block content %}
+            {% for item in items %}
+                {{ item.item_name }}
+            {% endfor %}
+        {% endblock %}
+    </div>
+</body>
