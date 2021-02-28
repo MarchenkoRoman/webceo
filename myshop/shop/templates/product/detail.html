@@ -8,11 +8,6 @@
         <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
         <h1>{{ item.item_name }}</h1>
         <p class="price">${{ item.price }}</p>
-        <form action="{% url "cart:order_add" item.item_id %}" method="post">
-            {{ order_form }}
-            {% csrf_token %}
-            <input type="submit" value="Add to order">
-        </form>
     </div>
     <div class="description">
         <h6>{{ item.description }}</h6>
