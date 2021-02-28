@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
+from annoying.decorators import render_to
 from django.views.generic import ListView
-from . models import Item
+from .models import Item, Sale
 
 
 class ItemList(ListView):
@@ -13,6 +14,9 @@ class ItemList(ListView):
         queryset = self.model._default_manager.filter(available=True).exclude(quantity=0)
         return queryset
 
+@render_to("product/detail.html")
 def item_detail(request, item_id):
     item = get_object_or_404(Item, item_id=item_id, available=True)
-    return render(request, "product/detail.html", {"item": item,})
+    return {"item": item}
+
+
