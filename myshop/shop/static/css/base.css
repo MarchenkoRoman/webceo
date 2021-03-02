@@ -73,34 +73,8 @@ ul.pagination {
     bottom: 0;
     right:  10px;
 }
-table {
-    width:100%;
-    border-spacing:0;
-    border-collapse: collapse;
-}
-
-
-table th, table td {
-    text-align:left;
-    font-size:14px;
-    padding:10px;
-    margin:0;
-    border: 1px solid black;
-}
-
-tbody tr:nth-child(odd) {
-
-}
-
-tbody td.num {
-    text-align:left;
-}
 
 td input[type="submit"] {
     font-size:12px;
     padding:4px 10px;
-}
-.sales {
-    border-collapse: collapse;
-
 }

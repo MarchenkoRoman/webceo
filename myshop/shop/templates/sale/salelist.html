@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sales{%  endblock %}
+
+
+{% block content %}
+  <br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Employee</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sale in sales %}
+        <tr>
+          <td>{{ sale.created_date }}</td>
+          <td>{{ sale.item }}</td>
+          <td>{{ sale.price }}</td>
+          <td>{{ sale.quantity }}</td>
+          <td>{{ sale.employee }}</td>
+          <td>{{ sale.get_cost}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
