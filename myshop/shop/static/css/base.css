@@ -17,6 +17,7 @@ a {
 
 img {
     padding: 10px;
+
 }
 
 #content {
@@ -52,6 +53,7 @@ img {
     float:left;
     text-align: -webkit-center;
     line-height:1.2;
+
 }
 .description {
     padding: 20px 20px 10px;

@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="header">
-        <a href="/" class="logo">My shop</a>
+        <a href="/" class="logo"><h1>My shop</h1></a>
         <ul class="auth">
           {% if request.user.is_authenticated %}
               <li>User: <a href="{% url "shop:sale_list" %}" >{{ user.get_username }}</a></li>
@@ -24,16 +24,19 @@
     </div>
     <div id="content">
         {% block content %}
-            <h2>Items</h2>
+            <h1>Items</h1>
                 {% for item in items %}
                     <div class="item">
                         <a href="{{ item.get_absolute_url }}">
-                        <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                        <img class="img-thumbnail" src="{% if item.image %}{{ item.image.url }}
+                                  {% else %}{% static "img/no_image.png" %}
+                                  {% endif %}">
                         </a>
-                        <a href="{{ item.get_absolute_url }}">{{ item.item_name }}</a>
-                        <a href="{{ item.get_absolute_url }}"><button type="button">Buy it</button></a>
+                        <a href="{{ item.get_absolute_url }}"><h2>{{ item.item_name }}</h2></a> ${{ item.price }}
                         <br>
-                        ${{ item.price }}
+                        <a href="{{ item.get_absolute_url }}">
+                            <button type="button" class="btn btn-primary btn-sm">Buy It</button>
+                        </a>
                     </div>
                 {% endfor %}
          {% endblock %}
