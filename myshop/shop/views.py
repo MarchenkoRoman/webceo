@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from annoying.decorators import render_to
 from django.views.generic import ListView
 from .models import Item, Sale
+from .form import CreateSaleForm
 
 
 class ItemList(ListView):
@@ -18,7 +20,24 @@ class ItemList(ListView):
 @render_to("product/detail.html")
 def item_detail(request, item_id):
     item = get_object_or_404(Item, item_id=item_id, available=True)
-    return {"item": item}
+    if request.method == 'POST':
+        form = CreateSaleForm(request.POST)
+        if form.is_valid():
+            quantity = form.cleaned_data['quantity']
+            employee = form.cleaned_data['employee']
+            if item.quantity >= quantity:
+                Sale.objects.create(item=item,
+                                    quantity=quantity,
+                                    employee=employee,
+                                    price=item.price)
+                item.quantity = item.quantity - quantity
+                item.save()
+
+            return HttpResponseRedirect('/')
+    else:
+        form = CreateSaleForm(request.POST)
+
+    return {"item": item, "form": form}
 
 class SaleList(LoginRequiredMixin, ListView):
     model = Sale
