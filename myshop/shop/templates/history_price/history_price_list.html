@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Price History{%  endblock %}
+
+
+{% block content %}
+  <table class="price">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in history_price %}
+        <tr>
+          <td>{{ item.item }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.created_date }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

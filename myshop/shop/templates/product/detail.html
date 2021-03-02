@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block title %}{{ item.item_name }}{% endblock %}
-
 {% block content %}
     <div class="item">
         <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">

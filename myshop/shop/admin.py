@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, Employee, Sale
+from .models import Item, Employee, Sale, PriceHistory
 
 
 @admin.register(Item)
@@ -18,3 +18,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 class SaleAdmin(admin.ModelAdmin):
     list_display = ['item',  'created_date']
 
+
+@admin.register(PriceHistory)
+class PriceHistoryAdmin(admin.ModelAdmin):
+    list_display = ['created_date', 'item', 'price']

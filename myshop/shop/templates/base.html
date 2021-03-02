@@ -14,10 +14,11 @@
         <a href="/" class="logo">My shop</a>
         <ul class="auth">
           {% if request.user.is_authenticated %}
-             <li>User: <a href="{% url "shop:sale_list" %}" >{{ user.get_username }}</a></li>
-            <li><a href="{% url "logout" %}">Logout</a></li>
+              <li>User: <a href="{% url "shop:sale_list" %}" >{{ user.get_username }}</a></li>
+              <li><a href="{% url "shop:history_price" %}">History Price</a></li>
+              <li><a href="{% url "logout" %}">Logout</a></li>
           {% else %}
-            <li><a href="{% url "login" %}">Login</a></li>
+              <li><a href="{% url "login" %}">Login</a></li>
           {% endif %}
         </ul>
     </div>

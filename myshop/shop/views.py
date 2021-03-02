@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from annoying.decorators import render_to
 from django.views.generic import ListView
-from .models import Item, Sale
+from .models import Item, Sale, PriceHistory
 from .form import CreateSaleForm
 
 
@@ -30,9 +30,6 @@ def item_detail(request, item_id):
                                     quantity=quantity,
                                     employee=employee,
                                     price=item.price)
-                item.quantity = item.quantity - quantity
-                item.save()
-
             return HttpResponseRedirect('/')
     else:
         form = CreateSaleForm(request.POST)
@@ -44,5 +41,12 @@ class SaleList(LoginRequiredMixin, ListView):
     paginate_by = 5
     context_object_name = "sales"
     template_name = "sale/salelist.html"
+
+
+class HistoryPrice(LoginRequiredMixin, ListView):
+    model = PriceHistory
+    paginate_by = 5
+    context_object_name = "history_price"
+    template_name = "history_price/history_price_list.html"
 
 
