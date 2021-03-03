@@ -1,7 +1,7 @@
 from django.test  import TestCase
 from django.urls import resolve
 from .models import Item, Employee, PriceHistory
-from .views import item_detail, ItemList
+from .views import  ItemList
 
 
 class HomePageTest(TestCase):
@@ -12,7 +12,6 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'base.html')
         self.assertEqual(response.status_code, 200)
         html = response.content.decode('utf8')
-        # self.assertTrue(html.startswith('<html>'))
         self.assertIn('<title>This amazing shop</title>', html)
         self.assertTrue(html.strip().endswith('</html>'))
 

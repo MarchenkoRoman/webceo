@@ -11,6 +11,9 @@
             {% csrf_token %}
             {{ form.employee }}
             {{ form.quantity }}
+            {% for error in form.errors %}
+            <tr><td>{{ error }}</td></tr>
+            {% endfor %}
             <input type="submit" value="Buy It">
         </form>
     </div>

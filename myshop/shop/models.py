@@ -82,4 +82,5 @@ def my_handler_sale(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Item)
 def my_handler(sender, instance, **kwargs):
-    PriceHistory.objects.create(item=instance, price=instance.price)
+    if 'price' in kwargs['update_fields']:
+        PriceHistory.objects.create(item=instance, price=instance.price)
