@@ -1,8 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ValidationError
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
-from annoying.decorators import render_to
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormMixin
 from .models import Item, Sale, PriceHistory
@@ -46,28 +42,9 @@ class ItemDetail(FormMixin, DetailView):
                                 employee=employee,
                                 price=self.object.price)
         else:
-            return form
+            return # ЧТО ТУТ  ВОЗВРАЩАТЬ ПРАВИЛЬНО???
         return super().form_valid(form)
 
-
-# @render_to("product/detail.html")
-# def item_detail(request, item_id):
-#     item = get_object_or_404(Item, item_id=item_id, available=True)
-#     if request.method == 'POST':
-#         form = CreateSaleForm(request.POST)
-#         if form.is_valid():
-#             quantity = form.cleaned_data['quantity']
-#             employee = form.cleaned_data['employee']
-#             if item.quantity >= quantity:
-#                 Sale.objects.create(item=item,
-#                                     quantity=quantity,
-#                                     employee=employee,
-#                                     price=item.price)
-#             return HttpResponseRedirect('/')
-#     else:
-#         form = CreateSaleForm(request.POST)
-#
-#     return {"item": item, "form": form}
 
 class SaleList(LoginRequiredMixin, ListView):
     model = Sale

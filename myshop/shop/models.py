@@ -22,6 +22,22 @@ class Item(models.Model):
     class Meta:
         ordering = ('item_name',)
 
+    def save(self,  *args, **kwargs):
+        if self.pk:
+            cls = self.__class__
+            old = cls.objects.get(pk=self.pk)
+            new = self
+            changed_field = []
+            for field in cls._meta.get_fields():
+                field_name = field.name
+                try:
+                    if getattr(old, field_name) != getattr(new, field_name):
+                        changed_field.append(field_name)
+                except Exception as e:
+                    pass
+            kwargs['update_fields'] = changed_field
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.item_name
 
@@ -81,6 +97,6 @@ def my_handler_sale(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Item)
-def my_handler(sender, instance, **kwargs):
-    if 'price' in kwargs['update_fields']:
+def my_handler(sender, instance, created, **kwargs):
+    if created or 'price' in kwargs['update_fields']:
         PriceHistory.objects.create(item=instance, price=instance.price)
