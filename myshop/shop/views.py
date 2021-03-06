@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormMixin
+from django.http import HttpResponseRedirect, HttpResponse
+from django.views.generic import ListView
+from django.views.generic.edit import FormView
 from .models import Item, Sale, PriceHistory
 from .form import CreateSaleForm
 
@@ -16,34 +17,31 @@ class ItemList(ListView):
         return queryset
 
 
-class ItemDetail(FormMixin, DetailView):
-    model = Item
-    context_object_name = "item"
-    template_name = "product/detail.html"
+class ItemDetail(FormView):
     form_class = CreateSaleForm
+    template_name = 'product/detail.html'
+    success_url = '/'
 
-    def get_success_url(self):
-        return '/'
+    def setup(self, request, *args, **kwargs):
+        super(ItemDetail, self).setup(request, *args, **kwargs)
+        self.item = Item.objects.get(pk=self.kwargs['pk'])
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(ItemDetail, self).get_form_kwargs()
+        kwargs['item'] = self.item
+        return kwargs
 
     def form_valid(self, form):
-        quantity = form.cleaned_data['quantity']
-        employee = form.cleaned_data['employee']
-        if self.object.quantity >= quantity:
-            Sale.objects.create(item=self.object,
-                                quantity=quantity,
-                                employee=employee,
-                                price=self.object.price)
+        super(ItemDetail, self).form_valid(form)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(self.success_url)
         else:
-            return # ЧТО ТУТ  ВОЗВРАЩАТЬ ПРАВИЛЬНО???
-        return super().form_valid(form)
+            self.form_invalid(form)
+
+    def form_invalid(self, form):
+        return HttpResponse("form is invalid.. ")
 
 
 class SaleList(LoginRequiredMixin, ListView):
