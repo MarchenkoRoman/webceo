@@ -70,4 +70,36 @@ class HistoryPriceTest(TestCase):
         self.client.login(username='mike', password='miketysonpass')
         response = self.client.get('')
         self.assertEqual(response.status_code, 200)
+        
+    def test_update_fields(self):
+        item = Item.objects.get(pk=1)
+
+        item.quantity = 120
+        item.price = 1000.00
+        item.save(update_fields=['quantity'])
+        print(type(item.price), item.price)
+
+        new_item = Item.objects.get(pk=1)
+        self.assertEqual(new_item.quantity, item.quantity)
+        self.assertNotEqual(new_item.price, item.price)
+
+    def test_update_fields_price(self):
+        item = Item.objects.get(pk=1)
+        item.quantity = 120
+        item.price = 1000.00
+        item.save(update_fields=['price'])
+
+        new_item = Item.objects.get(pk=1)
+        self.assertNotEqual(new_item.quantity, item.quantity)
+        self.assertEqual(new_item.price, item.price)
+
+    def test_update_fields_price_quantity(self):
+        item = Item.objects.get(pk=1)
+        item.quantity = 120
+        item.price = 1000.00
+        item.save()
+
+        new_item = Item.objects.get(pk=1)
+        self.assertEqual(new_item.quantity, item.quantity)
+        self.assertEqual(new_item.price, item.price)
 
