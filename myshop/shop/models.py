@@ -28,14 +28,15 @@ class Item(models.Model):
             old = cls.objects.get(pk=self.pk)
             new = self
             changed_field = []
-            for field in cls._meta.get_fields():
-                field_name = field.name
-                try:
-                    if getattr(old, field_name) != getattr(new, field_name):
-                        changed_field.append(field_name)
-                except Exception as e:
-                    pass
-            kwargs['update_fields'] = changed_field
+            if not kwargs.get('update_fields', None):
+                for field in cls._meta.get_fields():
+                    field_name = field.name
+                    try:
+                        if getattr(old, field_name) != getattr(new, field_name):
+                            changed_field.append(field_name)
+                    except Exception as e:
+                        pass
+                kwargs['update_fields'] = changed_field
         super().save(*args, **kwargs)
 
     def __str__(self):
