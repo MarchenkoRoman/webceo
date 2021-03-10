@@ -39,7 +39,6 @@ class ItemListTest(TestCase):
         item = Item.objects.get(pk=1)
         self.assertTrue(item.available)
 
-
     def test_data_employee(self):
         employee = Employee.objects.get(pk=1)
         self.assertEqual(employee.employee_name, "Nikoloy")
@@ -55,6 +54,7 @@ class ItemListTest(TestCase):
 class HistoryPriceTest(TestCase):
     """Testing  post_save"""
     fixtures = ["shop_models"]
+
     def set_up(self):
         self.client = Client()
         self.user = User.objects.create('mike', 'tyson@gmail.com', 'miketysonpass')
@@ -77,11 +77,11 @@ class HistoryPriceTest(TestCase):
         item.quantity = 120
         item.price = 1000.00
         item.save(update_fields=['quantity'])
-        print(type(item.price), item.price)
 
         new_item = Item.objects.get(pk=1)
         self.assertEqual(new_item.quantity, item.quantity)
         self.assertNotEqual(new_item.price, item.price)
+        self.assertFalse(PriceHistory.objects.exists())
 
     def test_update_fields_price(self):
         item = Item.objects.get(pk=1)
@@ -92,6 +92,7 @@ class HistoryPriceTest(TestCase):
         new_item = Item.objects.get(pk=1)
         self.assertNotEqual(new_item.quantity, item.quantity)
         self.assertEqual(new_item.price, item.price)
+        self.assertTrue(PriceHistory.objects.exists())
 
     def test_update_fields_price_quantity(self):
         item = Item.objects.get(pk=1)
@@ -102,4 +103,5 @@ class HistoryPriceTest(TestCase):
         new_item = Item.objects.get(pk=1)
         self.assertEqual(new_item.quantity, item.quantity)
         self.assertEqual(new_item.price, item.price)
+        self.assertTrue(PriceHistory.objects.exists())
 

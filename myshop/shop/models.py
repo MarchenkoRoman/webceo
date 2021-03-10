@@ -2,13 +2,12 @@ from decimal import Decimal
 from django.urls import reverse
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.db.models import F
 from django.dispatch import receiver
-from .mixin_model_change import ModelDiffMixin
 
 
-class Item(ModelDiffMixin, models.Model):
+class Item(models.Model):
     item_id = models.AutoField(primary_key=True)
     item_name = models.CharField(max_length=120, verbose_name='Товар')
     quantity = models.PositiveSmallIntegerField(verbose_name='Количество')
@@ -81,8 +80,20 @@ def my_handler_sale(sender, instance, **kwargs):
     Item.objects.filter(item_id=instance.item.item_id).update(quantity=F('quantity') - instance.quantity)
 
 
+@receiver(pre_save, sender=Item)
+def get_price_on_pre_save(sender, instance, **kwargs):
+    try:
+        obj = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        pass
+    else:
+        instance.__original_price = obj.price
+
+
 @receiver(post_save, sender=Item)
-def my_handler(sender, instance, created, **kwargs):
-    if 'price' in instance.changed_fields:
-        PriceHistory.objects.create(item=instance, price=instance.price)
+def check_price_post_save(sender, instance, created, **kwargs):
+    if not created:
+        if not instance.__original_price == sender.objects.get(pk=instance.pk).price:
+            PriceHistory.objects.create(item=instance, price=instance.price)
+
 
